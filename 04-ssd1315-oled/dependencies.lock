@@ -3,6 +3,13 @@ dependencies:
     source:
       type: idf
     version: 6.1.0
+  lvgl/lvgl:
+    component_hash: 184e532558c1c45fefed631f3e235423d22582aafb4630f3e8885c35281a49ae
+    dependencies: []
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 9.5.0
   waveshare/esp_oled_ssd1315:
     component_hash: 54ca4f42f0a8f635c149dae23c838b5c12b56d28564fc8bc895437f4324eb5d2
     dependencies:
@@ -15,7 +22,8 @@ dependencies:
     version: 2.0.0
 direct_dependencies:
 - idf
+- lvgl/lvgl
 - waveshare/esp_oled_ssd1315
-manifest_hash: 52fc31838da690906dee8e33b616cc76666d711baa004e50c7db08155953f4fc
+manifest_hash: a20b0cf0778fc96f19b87b1fb47f533b76fd3f1048912c15c0b8420af305809f
 target: esp32s3
 version: 3.0.0
