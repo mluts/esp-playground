@@ -1,0 +1,7 @@
+CompileFlags:
+  CompilationDatabase: build
+  # NOTE: GCC-only flags from the ESP-IDF xtensa toolchain that clang rejects
+  Remove:
+    - -m*
+    - -f*
+  BuiltinHeaders: QueryDriver
