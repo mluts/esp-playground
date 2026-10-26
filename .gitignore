@@ -4,3 +4,5 @@
 **/.ninja_log
 **/.out
 */build
+*/managed_components
+**/.cache
