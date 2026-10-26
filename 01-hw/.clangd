@@ -1,0 +1,9 @@
+CompileFlags:
+  CompilationDatabase: build
+  # NOTE: GCC-only flags from the ESP-IDF xtensa toolchain that clang rejects
+  Remove:
+    - -fno-shrink-wrap
+    - -fstrict-volatile-bitfields
+    - -fno-tree-switch-conversion
+    - -fzero-init-padding-bits=*
+    - -fno-malloc-dce

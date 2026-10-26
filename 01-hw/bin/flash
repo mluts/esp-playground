@@ -1,0 +1,2 @@
+#!/bin/sh
+idf.py flash -p /dev/cu.usbmodem831201

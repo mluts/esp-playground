@@ -1,0 +1,2 @@
+#!/bin/sh
+idf.py monitor -p /dev/cu.usbmodem831201

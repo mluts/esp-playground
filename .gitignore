@@ -1,0 +1,6 @@
+/.helix/languages.toml
+**/.bin_timestamp
+**/.ninja_deps
+**/.ninja_log
+**/.out
+*/build
