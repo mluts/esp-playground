@@ -1,2 +1,6 @@
-#!/bin/sh
-idf.py monitor -p /dev/cu.usbmodem831201
+#!/bin/zsh
+# NOTE: zsh, not sh — the activate script detects sourcing via ZSH_EVAL_CONTEXT;
+# under sh it checks $0, which is this script's name, and refuses to run.
+# . ~/.espressif/tools/activate_idf_v6.1.sh > /dev/null
+# idf.py monitor -p /dev/cu.usbmodem831201
+eim run 'idf.py monitor -p /dev/cu.usbmodem831201'
