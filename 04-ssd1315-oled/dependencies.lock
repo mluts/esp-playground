@@ -1,0 +1,21 @@
+dependencies:
+  idf:
+    source:
+      type: idf
+    version: 6.1.0
+  waveshare/esp_oled_ssd1315:
+    component_hash: 54ca4f42f0a8f635c149dae23c838b5c12b56d28564fc8bc895437f4324eb5d2
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=5.3'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 2.0.0
+direct_dependencies:
+- idf
+- waveshare/esp_oled_ssd1315
+manifest_hash: 52fc31838da690906dee8e33b616cc76666d711baa004e50c7db08155953f4fc
+target: esp32s3
+version: 3.0.0
