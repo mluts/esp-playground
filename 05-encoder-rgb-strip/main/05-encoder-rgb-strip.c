@@ -1,7 +1,9 @@
 #include "encoder.h"
 #include "esp_err.h"
 #include "esp_log.h"
+#include "esp_log_level.h"
 #include "freertos/idf_additions.h"
+#include "led_strip.h"
 #include "portmacro.h"
 #include <freertos/FreeRTOS.h>
 #include <freertos/queue.h>
@@ -35,7 +37,47 @@ QueueHandle_t create_rotary_encoder() {
   return encoder_event_queue;
 }
 
+static led_strip_handle_t led_strip;
+static bool led_on = false;
+static uint32_t led_red = 16;
+
+void configure_led() {
+  led_strip_config_t strip_config = {
+      .strip_gpio_num = 21,
+      .max_leds = 1, // at least one LED on board
+  };
+
+  led_strip_rmt_config_t rmt_config = {
+      .resolution_hz = 10 * 1000 * 1000, // 10MHz
+      .flags.with_dma = false,
+  };
+  ESP_ERROR_CHECK(
+      led_strip_new_rmt_device(&strip_config, &rmt_config, &led_strip));
+}
+
+void blink_led(void *arg) {
+  configure_led();
+
+  while (1) {
+    /* If the addressable LED is enabled */
+    if (led_on) {
+      // ESP_LOGI("LED", "RED %" PRIi32, led_red);
+      /* Set the LED pixel using RGB from 0 (0%) to 255 (100%) for each color */
+      led_strip_set_pixel(led_strip, 0, led_red, 16, 16);
+      /* Refresh the strip to send data */
+      led_strip_refresh(led_strip);
+    } else {
+      /* Set all LED off to clear all pixels */
+      led_strip_clear(led_strip);
+    }
+
+    vTaskDelay(10 / portTICK_PERIOD_MS);
+  }
+}
+
 void app_main(void) {
+
+  xTaskCreate(blink_led, "BLINK LED", 4 * 1024, NULL, 2, NULL);
 
   QueueHandle_t encoder_event_queue = create_rotary_encoder();
 
@@ -57,15 +99,26 @@ void app_main(void) {
     case RE_ET_BTN_CLICKED:
       ESP_LOGI("ENCODER", "Button clicked");
       // rotary_encoder_enable_acceleration(re, 100);
-      ESP_LOGI("ENCODER", "Acceleration enabled");
+      // ESP_LOGI("ENCODER", "Acceleration enabled");
       break;
     case RE_ET_BTN_LONG_PRESSED:
       ESP_LOGI("ENCODER", "Looooong pressed button");
+      led_on = !led_on;
       // rotary_encoder_disable_acceleration(re);
-      ESP_LOGI("ENCODER", "Acceleration disabled");
+      // ESP_LOGI("ENCODER", "Acceleration disabled");
       break;
     case RE_ET_CHANGED:
       val += e.diff;
+
+      int32_t dd = e.diff * 4;
+
+      if (dd < 0 && abs(dd) > led_red) {
+        led_red = 0;
+      } else if (dd > 0 && (led_red + dd) > 255) {
+        led_red = 255;
+      } else {
+        led_red += dd;
+      }
       ESP_LOGI("ENCODER", "Value = %" PRIi32, val);
       break;
     default:
